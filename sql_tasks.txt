@@ -29,3 +29,92 @@ Values ('Roksi L1', 'Roksi F1', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.
 ('Roksi L3', 'Roksi F3', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
 ('Roksi L4', 'Roksi F4', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
 ('Roksi L5', 'Roksi F5', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' )
+
+
+-------------------------------------------
+--32. JuliaP
+SELECT 
+      FirstName,LastName
+FROM Employees
+WHERE city='London';
+-------------------------------------------
+--33. JuliaP
+SELECT 
+       FirstName
+      ,LastName
+FROM Employees
+where BirthDate in (
+		SELECT min(BirthDate)
+		FROM Employees
+);
+------------------------------------------
+--34. JuliaP
+SELECT 
+       FirstName
+	  ,LastName
+	  ,COUNT(1)
+FROM Employees E
+LEFT JOIN Orders O On E.EmployeeID = O.EmployeeID
+where O.ShippedDate > O.RequiredDate
+and (O.ShippedDate > ('1997-01-01 00:00:00.000')
+and O.ShippedDate < ('1998-01-01 00:00:00.000')
+)
+group by 
+       FirstName
+	  ,LastName
+order by 1 
+------------------------------------------
+--35. JuliaP
+select 
+	c.CustomerID, c.CompanyName, c.Country
+from Customers C
+where Country = 'France'
+AND CustomerID IN (
+	select DISTINCT O.CustomerID--, OD.ProductID 
+	from orders O 
+		join [Order Details] OD on O.OrderID = OD.OrderID
+		join Products p on od.ProductID = P.ProductID
+		join Suppliers s on p.SupplierID = s.SupplierID
+	where s.Country != 'France'
+	)
+;
+----------------------------------------------
+--36. JuliaP
+select	distinct
+		--O.EmployeeID, 
+		--E.FirstName, E.LastName as Employee_name, 
+		E.City as EmloyeeCity,
+		--C.ContactName, 
+		C.City as CustomerCity,
+		O.ShipCity as WhereOrderMadeTo
+from Orders O
+left join Employees E on O.EmployeeID = E.EmployeeID
+left join Customers C on O.CustomerID = C.CustomerID
+order by 1,2,3
+;
+--------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
