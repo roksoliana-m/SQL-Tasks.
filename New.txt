@@ -1,3 +1,23 @@
-new
+**Show all info about the employee with ID 8*****
+Select *
+from Employees
+where EmployeeID=8;
 
-ghjl
+***Show the list of cities in which the average age of employees is greater than 60*******
+select City, Avg (CAST (DATEDIFF(Day, BirthDate, GETDATE ())/365.25 as int)) AvgAge
+from Employees
+where year(BirthDate) > 60 
+Group by City;
+
+/*****Show the first and last names of the employees as well as the count of orders each of them have received during the year of 1997 (Subquery)****/
+SELECT FirstName, LastName, COUNT(Orders.OrderID) OrdersCount
+FROM Employees, Orders
+Where Employees.EmployeeID = Orders.EmployeeID and year(OrderDate)=1997
+Group by FirstName, LastName;
+
+/****Show the list of french customers' names who used to order non-french products (left join)***/
+select Customers.ContactName
+from Customers left join Orders on Customers.CustomerID=Orders.CustomerID
+where Customers.Country = 'France' and Orders.ShipCountry != 'France'
+Group by ContactName;
+
