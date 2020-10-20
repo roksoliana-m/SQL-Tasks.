@@ -1,0 +1,170 @@
+3. Roksi
+Select FirstName, LastName 
+from Employees 
+where FirstName like 'A%'
+
+10. Roksi
+Select top 3 FirstName, LastName, BirthDate CAST (DATEDIFF(Day, BIRTDATE, GETDATE())/365.25 AS Int) AGE
+from Employees order by BirthDate
+
+17. Roksi
+Select Customers.CompanyName, count(*) 
+from Customers inner join Orders on Orders.CustomerID=Customers.CustomerID 
+where Country= 'France' group by Customers.CompanyName
+
+24. Roksi
+Select  Customers.CompanyName
+from Customers 
+inner join Orders on Orders.CustomerID=Customers.CustomerID 
+inner join [Order Details] on [Order Details].OrderID=Orders.OrderID
+inner join Products on Products.ProductID=[Order Details].ProductID
+inner join Suppliers on Suppliers.SupplierID=Products.SupplierID
+where Customers.Country= 'France' and Suppliers.Country='France'
+group by Customers.CompanyName
+
+31. Roksi
+Insert into Employees(LastName, FirstName, BirthDate, HireDate, Address, City, Country, Notes)
+Values ('Roksi L1', 'Roksi F1', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
+('Roksi L2', 'Roksi F2', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
+('Roksi L3', 'Roksi F3', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
+('Roksi L4', 'Roksi F4', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
+('Roksi L5', 'Roksi F5', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' )
+
+
+-------------------------------------------
+--32. JuliaP
+SELECT 
+      FirstName,LastName
+FROM Employees
+WHERE city='London';
+-------------------------------------------
+--33. JuliaP
+SELECT 
+       FirstName
+      ,LastName
+FROM Employees
+where BirthDate in (
+		SELECT min(BirthDate)
+		FROM Employees
+);
+------------------------------------------
+--34. JuliaP
+SELECT 
+       FirstName
+	  ,LastName
+	  ,COUNT(1)
+FROM Employees E
+LEFT JOIN Orders O On E.EmployeeID = O.EmployeeID
+where O.ShippedDate > O.RequiredDate
+and (O.ShippedDate > ('1997-01-01 00:00:00.000')
+and O.ShippedDate < ('1998-01-01 00:00:00.000')
+)
+group by 
+       FirstName
+	  ,LastName
+order by 1 
+------------------------------------------
+--35. JuliaP
+select 
+	c.CustomerID, c.CompanyName, c.Country
+from Customers C
+where Country = 'France'
+AND CustomerID IN (
+	select DISTINCT O.CustomerID--, OD.ProductID 
+	from orders O 
+		join [Order Details] OD on O.OrderID = OD.OrderID
+		join Products p on od.ProductID = P.ProductID
+		join Suppliers s on p.SupplierID = s.SupplierID
+	where s.Country != 'France'
+	)
+;
+----------------------------------------------
+--36. JuliaP
+select	distinct
+		--O.EmployeeID, 
+		--E.FirstName, E.LastName as Employee_name, 
+		E.City as EmloyeeCity,
+		--C.ContactName, 
+		C.City as CustomerCity,
+		O.ShipCity as WhereOrderMadeTo
+from Orders O
+left join Employees E on O.EmployeeID = E.EmployeeID
+left join Customers C on O.CustomerID = C.CustomerID
+order by 1,2,3
+;
+--------------------------------------------
+
+Task 4. Yana Marusyak
+Show the list of first, last names and ages of the employees whose age is greater than 55.
+The result should be sorted by last name.
+
+SELECT FirstName, LastName,CAST (DATEDIFF (Day, BirthDate, GETDATE())/365.25 AS int) AGE
+FROM Employees
+WHERE CAST (DATEDIFF (Day, BirthDate, GETDATE())/365.25 AS int) > 55
+ORDER BY LastName
+
+
+Task 11.Yana Marusyak
+Show the list of all cities where the employees are from (use Distinct)
+
+SELECT DISTINCT City
+FROM Employees
+
+
+Task 18.Yana Marusyak
+Show the list of french customers’ names who have made more than one order (use grouping).
+
+SELECT CompanyName, COUNT (OrderDate) AS Zakaz
+FROM Customers
+ INNER JOIN Orders ON Orders.CustomerID=Customers.CustomerID
+ WHERE Country= 'France' 
+GROUP BY CompanyName
+HAVING COUNT (OrderDate) >1
+
+
+Task 25.Yana Marusyak
+*Show the total ordering sum calculated for each country of customer.
+
+SELECT Country, SUM (UnitPrice * Quantity) AS SUMA
+FROM Customers
+ INNER JOIN Orders ON Orders.CustomerID=Customers.CustomerID
+ INNER JOIN [Order Details] ON Orders.OrderID=[Order Details].OrderID
+GROUP BY Country
+Order by SUM (UnitPrice * Quantity) ASC
+
+
+Task 32.Yana Marusyak
+*Fetch the records you have inserted by the SELECT statement
+
+INSERT INTO Employees (LastName, FirstName, BirthDate, HireDate, Address, City, Country, Notes)
+VALUES ('Marusyak', 'Yana', '1987-12-21', '2015-06-01', 'Shevchenka 5', 'Chernivtsi', 'Ukraine', 'Yana Marusiak')
+
+SELECT *
+FROM Employees
+WHERE LastName='Marusyak'
+
+
+----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

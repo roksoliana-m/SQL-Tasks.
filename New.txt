@@ -1,0 +1,59 @@
+Task 4. Show the list of first, last names and ages of the employees whose age is greater than 55.
+The result should be sorted by last name.
+
+SELECT FirstName, LastName,CAST (DATEDIFF (Day, BirthDate, GETDATE())/365.25 AS int) AGE
+FROM Employees
+WHERE CAST (DATEDIFF (Day, BirthDate, GETDATE())/365.25 AS int) > 55
+ORDER BY LastName
+
+
+
+Task 11.Show the list of all cities where the employees are from. Use Distinct
+
+SELECT DISTINCT City
+FROM Employees
+
+
+
+
+Task 18.Show the list of french customers’ names who have made more than one order (use grouping).
+
+SELECT CompanyName, COUNT (OrderDate) AS Zakaz
+FROM Customers
+ INNER JOIN Orders ON Orders.CustomerID=Customers.CustomerID
+ WHERE Country= 'France' 
+GROUP BY CompanyName
+HAVING COUNT (OrderDate) >1
+
+
+
+
+Task 25.*Show the total ordering sum calculated for each country of customer.
+
+SELECT Country, SUM (Freight) AS Suma
+FROM Customers
+ INNER JOIN Orders ON Orders.CustomerID=Customers.CustomerID 
+GROUP BY Country
+ORDER BY Suma ASC
+
+
+
+SELECT Country, SUM (UnitPrice * Quantity) AS SUMA
+FROM Customers
+ INNER JOIN Orders ON Orders.CustomerID=Customers.CustomerID
+ INNER JOIN [Order Details] ON Orders.OrderID=[Order Details].OrderID
+GROUP BY Country
+Order by SUM (UnitPrice * Quantity) ASC
+
+
+
+
+Task 32.*Fetch the records you have inserted by the SELECT statement
+
+INSERT INTO Employees (LastName, FirstName, BirthDate, HireDate, Address, City, Country, Notes)
+VALUES ('Marusyak', 'Yana', '1987-12-21', '2015-06-01', 'Shevchenka 5', 'Chernivtsi', 'Ukraine', 'Yana Marusiak')
+
+
+SELECT *
+FROM Employees
+WHERE LastName='Marusyak'
