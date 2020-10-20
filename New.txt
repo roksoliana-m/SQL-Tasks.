@@ -8,7 +8,7 @@ ORDER BY LastName
 
 
 
-Task 11.Show the list of all cities where the employees are from.      Використовуючи Distinct
+Task 11.Show the list of all cities where the employees are from. Use Distinct
 
 SELECT DISTINCT City
 FROM Employees
