@@ -7,7 +7,11 @@ where EmployeeID=8;
 Select FirstName, LastName 
 from Employees 
 where FirstName like 'A%'
-
+6. Olia
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT MAX(BirthDate) as Maximum, MIN(BirthDate) as Minimum, CAST(AVG(CAST(BirthDate AS FLOAT)) AS DATETIME) as Average
+  FROM [Northwind].[dbo].[Employees]
+  WHERE [City] LIKE 'London'
 8.Olesya***Show the list of cities in which the average age of employees is greater than 60*******
 select City, Avg (CAST (DATEDIFF(Day, BirthDate, GETDATE ())/365.25 as int)) AvgAge
 from Employees
@@ -17,7 +21,11 @@ Group by City;
 10. Roksi
 Select top 3 FirstName, LastName, BirthDate CAST (DATEDIFF(Day, BIRTDATE, GETDATE())/365.25 AS Int) AGE
 from Employees order by BirthDate
-
+13. Olia
+SELECT empl.FirstName, empl.LastName FROM [Northwind].[dbo].[Orders] 
+INNER JOIN [Northwind].[dbo].[Employees] as empl
+ON [Northwind].[dbo].[Orders].[EmployeeID] = empl.EmployeeID
+WHERE [ShipCity] LIKE 'Madrid'
 15.Olesya/*****Show the first and last names of the employees as well as the count of orders each of them have received during the year of 1997 (Subquery)****/
 SELECT FirstName, LastName, COUNT(Orders.OrderID) OrdersCount
 FROM Employees, Orders
@@ -28,7 +36,13 @@ Group by FirstName, LastName;
 Select Customers.CompanyName, count(*) 
 from Customers inner join Orders on Orders.CustomerID=Customers.CustomerID 
 where Country= 'France' group by Customers.CompanyName
-
+20.Olia
+SELECT customers.ContactName FROM [Northwind].[dbo].[Orders]
+INNER JOIN [Northwind].[dbo].[Customers] as customers
+ON [Northwind].[dbo].[Orders].[CustomerID] = customers.CustomerID
+WHERE [Northwind].[dbo].[Orders].[OrderID] IN (SELECT [OrderID]
+						FROM [Northwind].[dbo].[Order Details]
+						WHERE ProductID=14 /*Tofu product id = 14 */)
 22.Olesya/****Show the list of french customers' names who used to order non-french products (left join)***/
 select Customers.ContactName
 from Customers left join Orders on Customers.CustomerID=Orders.CustomerID
@@ -44,7 +58,16 @@ inner join Products on Products.ProductID=[Order Details].ProductID
 inner join Suppliers on Suppliers.SupplierID=Products.SupplierID
 where Customers.Country= 'France' and Suppliers.Country='France'
 group by Customers.CompanyName
-
+27.Olia
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT categories.CategoryID, categories.CategoryName, SUM([Quantity]) AS TotalOrderSum
+          FROM [Northwind].[dbo].[Order Details]
+		  INNER JOIN [Northwind].[dbo].[Products] as products ON [Northwind].[dbo].[Order Details].[ProductID] = products.ProductID
+		  INNER JOIN [Northwind].[dbo].[Categories] as categories ON products.CategoryID = categories.CategoryID
+		  WHERE OrderID IN (SELECT [OrderID]
+					FROM [Northwind].[dbo].[Orders]
+					WHERE OrderDate >= '1997-01-01')
+         GROUP BY categories.CategoryID, categories.CategoryName
 29.Olesya/****Show the list of employees' names along with names of their chiefs (use left join with the same table)
 select e.FirstName + e.LastName Employee, m.FirstName + m.LastName Manager
 from Employees e left join Employees m on m.EmployeeID = e.ReportsTo
@@ -57,7 +80,9 @@ Values ('Roksi L1', 'Roksi F1', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.
 ('Roksi L3', 'Roksi F3', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
 ('Roksi L4', 'Roksi F4', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
 ('Roksi L5', 'Roksi F5', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' )
-
+34.OLia
+ UPDATE [Northwind].[dbo].[Employees]
+ SET [HireDate] = GETDATE()
 
 -------------------------------------------
 --32. JuliaP
