@@ -3,7 +3,8 @@ Select *
 from Employees
 where EmployeeID=8;
 
-3. Roksi
+3. Roksi      ***Show the list of first and last names of the employees whose first name begins with letter A.***
+
 Select FirstName, LastName 
 from Employees 
 where FirstName like 'A%'
@@ -29,7 +30,8 @@ from Employees
 where year(BirthDate) > 60 
 Group by City;
 
-10. Roksi
+10. Roksi      ***Show first, last names and ages of 3 eldest employees.***
+
 Select top 3 FirstName, LastName, BirthDate CAST (DATEDIFF(Day, BIRTDATE, GETDATE())/365.25 AS Int) AGE
 from Employees order by BirthDate
 
@@ -43,13 +45,15 @@ SELECT empl.FirstName, empl.LastName FROM [Northwind].[dbo].[Orders]
 INNER JOIN [Northwind].[dbo].[Employees] as empl
 ON [Northwind].[dbo].[Orders].[EmployeeID] = empl.EmployeeID
 WHERE [ShipCity] LIKE 'Madrid'
+
 15.Olesya/*****Show the first and last names of the employees as well as the count of orders each of them have received during the year of 1997 (Subquery)****/
 SELECT FirstName, LastName, COUNT(Orders.OrderID) OrdersCount
 FROM Employees, Orders
 Where Employees.EmployeeID = Orders.EmployeeID and year(OrderDate)=1997
 Group by FirstName, LastName;
 
-17. Roksi
+17. Roksi      ***Show the count of orders made by each customer from France.***
+
 Select Customers.CompanyName, count(*) 
 from Customers inner join Orders on Orders.CustomerID=Customers.CustomerID 
 where Country= 'France' group by Customers.CompanyName
@@ -77,7 +81,8 @@ from Customers left join Orders on Customers.CustomerID=Orders.CustomerID
 where Customers.Country = 'France' and Orders.ShipCountry != 'France'
 Group by ContactName;
 
-24. Roksi
+24. Roksi      ****Show the list of french customers’ names who used to order french products.***
+
 Select  Customers.CompanyName
 from Customers 
 inner join Orders on Orders.CustomerID=Customers.CustomerID 
@@ -113,13 +118,15 @@ select e.FirstName + e.LastName Employee, m.FirstName + m.LastName Manager
 from Employees e left join Employees m on m.EmployeeID = e.ReportsTo
 order by Manager
 
-31. Roksi
+31. Roksi      *Insert 5 new records into Employees table. Fill in the following fields: LastName, FirstName, BirthDate, HireDate, Address, City, Country, Notes. The Notes field should contain your own name (to distinguish your records from the ones inserted by other trainees).***
+
 Insert into Employees(LastName, FirstName, BirthDate, HireDate, Address, City, Country, Notes)
 Values ('Roksi L1', 'Roksi F1', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
 ('Roksi L2', 'Roksi F2', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
 ('Roksi L3', 'Roksi F3', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
 ('Roksi L4', 'Roksi F4', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' ),
 ('Roksi L5', 'Roksi F5', '1990-12-08 00:00:00.000', '2010-12-08 00:00:00.000', 'Shevchenka', 'Lviv', 'Ukraine', 'Roksi' )
+
 34.OLia
  UPDATE [Northwind].[dbo].[Employees]
  SET [HireDate] = GETDATE()
