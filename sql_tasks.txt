@@ -18,6 +18,10 @@ FROM Employees
 WHERE CAST (DATEDIFF (Day, BirthDate, GETDATE())/365.25 AS int) > 55
 ORDER BY LastName
 
+5. Yuliia Sharypova 
+Calculate the count of employees from London.
+SELECT COUNT(*) FROM Employees WHERE City = 'London';
+
 6. Olia
 /****** Script for SelectTopNRows command from SSMS  ******/
 SELECT MAX(BirthDate) as Maximum, MIN(BirthDate) as Minimum, CAST(AVG(CAST(BirthDate AS FLOAT)) AS DATETIME) as Average
@@ -39,6 +43,10 @@ from Employees order by BirthDate
 Show the list of all cities where the employees are from (use Distinct)
 
 SELECT DISTINCT City FROM Employees
+
+12. Yuliia Sharypova
+Show first, last names and dates of birth of the employees who celebrate their birthdays this month.
+SELECT FirstName, LastName, BirthDate FROM Employees WHERE MONTH(BirthDate) = MONTH (GETDATE());
 
 13. Olia
 SELECT empl.FirstName, empl.LastName FROM [Northwind].[dbo].[Orders] 
@@ -67,6 +75,10 @@ FROM Customers
  WHERE Country= 'France' 
 GROUP BY CompanyName
 HAVING COUNT (OrderDate) >1
+
+19. Yuliia Sharypova 
+Show the list of french customers’ names who have made more than one order (use a subquery).
+SELECT ContactName FROM Customers WHERE Country = 'France' AND (SELECT COUNT(*) FROM Orders, Customers WHERE Orders.CustomerID = Customers.CustomerID) > 1;
 
 20.Olia
 SELECT customers.ContactName FROM [Northwind].[dbo].[Orders]
@@ -101,6 +113,9 @@ FROM Customers
  INNER JOIN [Order Details] ON Orders.OrderID=[Order Details].OrderID
 GROUP BY Country
 Order by SUM (UnitPrice * Quantity) ASC
+
+26. Yuliia Sharypova
+Show the total ordering sums calculated for each customer’s country for domestic and non-domestic products separately (e.g.: “France – French products ordered – Non-french products ordered” and so on for each country).
 
 27.Olia
 /****** Script for SelectTopNRows command from SSMS  ******/
