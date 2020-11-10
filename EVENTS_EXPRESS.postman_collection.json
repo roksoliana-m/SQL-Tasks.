@@ -1,0 +1,1452 @@
+{
+	"info": {
+		"_postman_id": "677999f8-63d3-4407-a727-c50f44de1d0c",
+		"name": "EVENTS_EXPRESS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AUTHENTICATION",
+			"item": [
+				{
+					"name": "login as admin",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "226dcc1c-883e-433c-985e-288b5745d2da",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "cad98632-a593-4925-85cd-637c5189c610",
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Email Verification\", function () {\r",
+									"    pm.expect(jsonData.email).to.contain(\"nromanen\");\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//set auth token\r",
+									"pm.environment.set(\"TOKEN\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{ADMIN_EMAIL}}\",\r\n  \"password\": \"{{ADMIN_PASS}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Authentication/Login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Authentication",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login as user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a16ddc3-5c30-4161-b797-592080d9e47e",
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Email Verification\", function () {\r",
+									"    pm.expect(jsonData.email).to.contain(pm.environment.get(\"USER_EMAIL_1\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//set auth token\r",
+									"pm.environment.set(\"TOKEN\", jsonData.token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "202277ea-c816-45e9-a0f4-c24f2a292d62",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{USER_EMAIL_1}}\",\r\n  \"password\": \"{{USER_PASS_1}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Authentication/Login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Authentication",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "171a17cc-cc59-42fb-94a4-1718f228ccca",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1c94c6d4-f2bc-45e4-a9f0-bfb447bd4fa0",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "CATEGORY",
+			"item": [
+				{
+					"name": "get all categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "123d5a01-08c9-43ae-a5be-9603615e86dd",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d5a4845d-5ee3-4e59-bc4d-be0fdce7771b",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";\r",
+									"\r",
+									"var request = {\r",
+									"    url: url,\r",
+									"    method: 'POST', \r",
+									"    header: 'Content-Type:application/json',\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": pm.environment.get(\"ADMIN_EMAIL\"),\r",
+									"            \"password\": pm.environment.get(\"ADMIN_PASS\")\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(request,\r",
+									"    function (err, response) {\r",
+									"        pm.environment.set(\"TOKEN\", response.json().token)\r",
+									"        console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/Category/All",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Category",
+								"All"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add/edit category as admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ef2cf171-edc4-471e-8343-5571aa47bb95",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fe9ab707-b994-47f1-adf1-074225949755",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";\r",
+									"\r",
+									"var request = {\r",
+									"    url: url,\r",
+									"    method: 'POST', \r",
+									"    header: 'Content-Type:application/json',\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": pm.environment.get(\"ADMIN_EMAIL\"),\r",
+									"            \"password\": pm.environment.get(\"ADMIN_PASS\")\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(request,\r",
+									"    function (err, response) {\r",
+									"        pm.environment.set(\"TOKEN\", response.json().token)\r",
+									"        console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"f5001234-8520-4ef5-3787-08d85413b488\",\r\n  \"name\": \"Sea\",\r\n  \"countOfUser\": 0,\r\n  \"countOfEvents\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Category/Edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Category",
+								"Edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete category as admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f7dff6e6-25ed-4ba1-bb37-bb86608ea19b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a4929127-0c15-40c7-8438-5a57ddfd3e32",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";\r",
+									"\r",
+									"var request = {\r",
+									"    url: url,\r",
+									"    method: 'POST', \r",
+									"    header: 'Content-Type:application/json',\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": pm.environment.get(\"ADMIN_EMAIL\"),\r",
+									"            \"password\": pm.environment.get(\"ADMIN_PASS\")\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(request,\r",
+									"    function (err, response) {\r",
+									"        pm.environment.set(\"TOKEN\", response.json().token)\r",
+									"        console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"f5001234-8520-4ef5-3787-08d85413b488\",\r\n  \"name\": \"Sea\",\r\n  \"countOfUser\": 0,\r\n  \"countOfEvents\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Category/Delete/{733FECE8-7521-4B0D-B327-08D87C28611D}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Category",
+								"Delete",
+								"{733FECE8-7521-4B0D-B327-08D87C28611D}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add/edit category as user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a4964ceb-852d-4cb6-bd6c-3115c1202e1f",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";\r",
+									"\r",
+									"var request = {\r",
+									"    url: url,\r",
+									"    method: 'POST', \r",
+									"    header: 'Content-Type:application/json',\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": pm.environment.get(\"USER_EMAIL_1\"),\r",
+									"            \"password\": pm.environment.get(\"USER_PASS_1\")\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(request,\r",
+									"    function (err, response) {\r",
+									"        pm.environment.set(\"TOKEN\", response.json().token)\r",
+									"        console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"f5001234-8520-4ef5-3787-08d85413b488\",\r\n  \"name\": \"Sky\",\r\n  \"countOfUser\": 0,\r\n  \"countOfEvents\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Category/Edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Category",
+								"Edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete category as user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bfc598e4-8c0e-4c6f-ba1d-5e151196eeb8",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";\r",
+									"\r",
+									"var request = {\r",
+									"    url: url,\r",
+									"    method: 'POST', \r",
+									"    header: 'Content-Type:application/json',\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": pm.environment.get(\"USER_EMAIL_1\"),\r",
+									"            \"password\": pm.environment.get(\"USER_PASS_1\")\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(request,\r",
+									"    function (err, response) {\r",
+									"        pm.environment.set(\"TOKEN\", response.json().token)\r",
+									"        console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"f5001234-8520-4ef5-3787-08d85413b488\",\r\n  \"name\": \"Sea\",\r\n  \"countOfUser\": 0,\r\n  \"countOfEvents\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Category/Delete/{Sea}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Category",
+								"Delete",
+								"{Sea}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8f81e841-e512-4fd0-b789-8f7c1b487ecd",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "6c8d3761-7ed0-449d-9b41-53c2a959593a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "CHAT",
+			"item": [
+				{
+					"name": "GetAllChats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/Chat/GetAllChats ",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Chat",
+								"GetAllChats "
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetChat",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4fdcb551-47e6-491f-ac42-3b3332d24280",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";\r",
+									"\r",
+									"var request = {\r",
+									"    url: url,\r",
+									"    method: 'POST', \r",
+									"    header: 'Content-Type:application/json',\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": pm.environment.get(\"dddd88o@ukr.net\"),\r",
+									"            \"password\": pm.environment.get(\"olia22061996\")\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(request,\r",
+									"    function (err, response) {\r",
+									"        pm.environment.set(\"TOKEN\", response.json().token)\r",
+									"        console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJkZGRkODhvQHVrci5uZXQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjIwNzFkMzJkLTRiYzUtNGY5NC0zYTFmLTA4ZDg1ZmMwN2ZmMiIsImV4cCI6MTYwNDYwMzM1OH0.bFc6AB6IkQ8zN_5HtBG-nhd3q6dfMADKEi7D5Q3FFv8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/Chat/GetChat?chatId=6c0b39d1-339e-4228-a94e-08d86b55b9bb",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Chat",
+								"GetChat"
+							],
+							"query": [
+								{
+									"key": "chatId",
+									"value": "6c0b39d1-339e-4228-a94e-08d86b55b9bb"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUnreadMessages",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "65d5f62e-4e87-40ea-99ab-d7083537a18d",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";\r",
+									"\r",
+									"var request = {\r",
+									"    url: url,\r",
+									"    method: 'POST', \r",
+									"    header: 'Content-Type:application/json',\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": pm.environment.get(\"dddd88o@ukr.net\"),\r",
+									"            \"password\": pm.environment.get(\"olia22061996\")\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(request,\r",
+									"    function (err, response) {\r",
+									"        pm.environment.set(\"TOKEN\", response.json().token)\r",
+									"        console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJkZGRkODhvQHVrci5uZXQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjIwNzFkMzJkLTRiYzUtNGY5NC0zYTFmLTA4ZDg1ZmMwN2ZmMiIsImV4cCI6MTYwNDYwMzM1OH0.bFc6AB6IkQ8zN_5HtBG-nhd3q6dfMADKEi7D5Q3FFv8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/Chat/GetUnreadMessages?userId=2071d32d-4bc5-4f94-3a1f-08d85fc07ff2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Chat",
+								"GetUnreadMessages"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2071d32d-4bc5-4f94-3a1f-08d85fc07ff2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "COMMENT",
+			"item": [
+				{
+					"name": "Edit Comment as User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ5YW5hLm1hcnVzeWFrQHVrci5uZXQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjUxYjI1MDM1LTBlNWMtNGJjMy05NDQxLTA4ZDg2N2JmZGZhMSIsImV4cCI6MTYwNDA0OTgyMH0.t4w2F6GmhRUHyn3trFe16Sld001nvyqtuQ2nZfucifA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"test\",\r\n  \"userId\": \"51B25035-0E5C-4BC3-9441-08D867BFDFA1\",\r\n  \"eventId\": \"9B41C3A6-EF22-4BE8-43C8-08D858A84013\"\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Comment/Edit",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Comment",
+								"Edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment as User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ5YW5hLm1hcnVzeWFrQHVrci5uZXQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjUxYjI1MDM1LTBlNWMtNGJjMy05NDQxLTA4ZDg2N2JmZGZhMSIsImV4cCI6MTYwNDA1MDE1OX0.6Szry8Np5vM_3-NmWkgGijkD_V1IriALmDcr_1_NCZw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Comment/Delete/{F059DD35-4D92-4FCA-3240-08D87CB09F64}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Comment",
+								"Delete",
+								"{F059DD35-4D92-4FCA-3240-08D87CB09F64}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Return Comment as User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ5YW5hLm1hcnVzeWFrQHVrci5uZXQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjUxYjI1MDM1LTBlNWMtNGJjMy05NDQxLTA4ZDg2N2JmZGZhMSIsImV4cCI6MTYwNDA1MTE3M30.66dI4zeRr543ImWhA7-Wm9D45FIuBSKno5-rOWAL5-M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/Comment/All/9B41C3A6-EF22-4BE8-43C8-08D858A84013",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Comment",
+								"All",
+								"9B41C3A6-EF22-4BE8-43C8-08D858A84013"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment as Admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJucm9tYW5lbkBzb2Z0c2VydmVpbmMuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMjNkMzdiYmMtNTk5Ni00Zjk1LTMxZGMtMDhkODVmMTU0Yjg5IiwiZXhwIjoxNjA0MDUzNjcwfQ.eZp_Q7EihoYeno2lG1clkyS_k_19WMZvaFTALmWomGU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Comment/Delete/{500C6DB4-C71C-48E1-323D-08D87CB09F64}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Comment",
+								"Delete",
+								"{500C6DB4-C71C-48E1-323D-08D87CB09F64}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "EVENT",
+			"item": [
+				{
+					"name": "Event/Block",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"eventId\": \"079D90AE-A19A-4E7A-4DC6-08D85A25CED4\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Event/Block/?eventId=5c3a8f33-56bf-498c-90bb-08d87a8285ee",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Event",
+								"Block",
+								""
+							],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "5c3a8f33-56bf-498c-90bb-08d87a8285ee"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event/Unblock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"eventID\":\"931F5061-3B10-4FD5-3DDF-08D878FDEF2B\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Event/Unblock?eventId=5c3a8f33-56bf-498c-90bb-08d87a8285ee",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Event",
+								"Unblock"
+							],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "5c3a8f33-56bf-498c-90bb-08d87a8285ee"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event/Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "115b850a-a029-49fd-84d4-023ebf1bf969",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"}); ",
+									"",
+									"pm.test(\"Get event\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(\"931F5061-3B10-4FD5-3DDF-08D878FDEF2B\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Event/Get?id=931F5061-3B10-4FD5-3DDF-08D878FDEF2B",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Event",
+								"Get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "931F5061-3B10-4FD5-3DDF-08D878FDEF2B"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ROLES",
+			"item": [],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "LOCATIONS",
+			"item": [],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "TOKEN",
+			"item": [],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "USERS",
+			"item": [
+				{
+					"name": "Search Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "132fe8fd-0e6c-41e2-8b64-70630b1ac07d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.items[0].email).to.contain(\"olesia\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/Users/SearchUsers?KeyWord=mount",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Users",
+								"SearchUsers"
+							],
+							"query": [
+								{
+									"key": "KeyWord",
+									"value": "mount"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User Name as User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e2feb5ec-ca5a-4f5d-bbb7-b0cf38f0d6c8",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";\r",
+									"\r",
+									"var request = {\r",
+									"    url: url,\r",
+									"    method: 'POST', \r",
+									"    header: 'Content-Type:application/json',\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": pm.environment.get(\"USER_EMAIL_1\"),\r",
+									"            \"password\": pm.environment.get(\"USER_PASS_1\")\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(request,\r",
+									"    function (err, response) {\r",
+									"        pm.environment.set(\"TOKEN\", response.json().token)\r",
+									"        console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"51B25035-0E5C-4BC3-9441-08D867BFDFA1\",\r\n  \"name\": \"Yana Marusyak\",\r\n  \"email\": \"yana.marusyak@ukr.net\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Users/EditUsername",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Users",
+								"EditUsername"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Block User as Admin",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3e9a89fd-5e77-4731-8c84-71279b858969",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";",
+									"",
+									"var request = {",
+									"    url: url,",
+									"    method: 'POST', ",
+									"    header: 'Content-Type:application/json',",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"email\": pm.environment.get(\"ADMIN_EMAIL\"),",
+									"            \"password\": pm.environment.get(\"ADMIN_PASS\")",
+									"        })",
+									"    }",
+									"};",
+									"",
+									"pm.sendRequest(request,",
+									"    function (err, response) {",
+									"        pm.environment.set(\"TOKEN\", response.json().token)",
+									"        console.log(response.json());",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Users/Block?UserId=15de7791-3d47-4a89-3a1d-08d85fc07ff2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Users",
+								"Block"
+							],
+							"query": [
+								{
+									"key": "UserId",
+									"value": "15de7791-3d47-4a89-3a1d-08d85fc07ff2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unblock User as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2f3343ac-59ba-4814-8495-2f10a7dc612f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response time is less than 2000ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6d83db51-38de-4a10-a7cf-e0e6608ed7f5",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";",
+									"",
+									"var request = {",
+									"    url: url,",
+									"    method: 'POST', ",
+									"    header: 'Content-Type:application/json',",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            \"email\": pm.environment.get(\"ADMIN_EMAIL\"),",
+									"            \"password\": pm.environment.get(\"ADMIN_PASS\")",
+									"        })",
+									"    }",
+									"};",
+									"",
+									"pm.sendRequest(request,",
+									"    function (err, response) {",
+									"        pm.environment.set(\"TOKEN\", response.json().token)",
+									"        console.log(response.json());",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Users/Unblock?UserId=15de7791-3d47-4a89-3a1d-08d85fc07ff2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Users",
+								"Unblock"
+							],
+							"query": [
+								{
+									"key": "UserId",
+									"value": "15de7791-3d47-4a89-3a1d-08d85fc07ff2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password as User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8c7d4cb8-84c3-477d-890e-262ba68570d1",
+								"exec": [
+									"var url = pm.environment.get(\"BASE_URL\") + \"/Authentication/Login\";\r",
+									"\r",
+									"var request = {\r",
+									"    url: url,\r",
+									"    method: 'POST', \r",
+									"    header: 'Content-Type:application/json',\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"email\": pm.environment.get(\"USER_EMAIL_1\"),\r",
+									"            \"password\": pm.environment.get(\"USER_PASS_1\")\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(request,\r",
+									"    function (err, response) {\r",
+									"        pm.environment.set(\"TOKEN\", response.json().token)\r",
+									"        console.log(response.json());\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "f2a54b04-a15a-4507-a64e-d3f5f169c8ad",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"oldPassword\": \"yanul9ka87\",\r\n  \"newPassword\": \"yanul9ka1987\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/Authentication/ChangePassword",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"Authentication",
+								"ChangePassword"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c26163c6-a4ee-4f0c-8b16-1cc1d5f27254",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "abc77c95-a386-4bcc-80e6-1df3be715ccd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
